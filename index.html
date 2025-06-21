@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Man Choice - Premium Fragrance</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config={theme:{extend:{colors:{primary:'#D4AF37',secondary:'#1A1A1A'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <style>
+        :where([class^="ri-"])::before { content: "\f3c2"; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #1A1A1A;
+            color: #fff;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif;
+        }
+        .hero-section {
+            background-image: linear-gradient(to right, rgba(26, 26, 26, 0.9), rgba(26, 26, 26, 0.7)), url('https://readdy.ai/api/search-image?query=elegant%2520dark%2520luxury%2520perfume%2520bottle%2520on%2520black%2520background%2520with%2520gold%2520accents%2520professional%2520product%2520photography%2520with%2520dramatic%2520lighting%2520and%2520reflections%2520mysterious%2520atmosphere%2520high-end%2520premium%2520feel&width=1920&height=1080&seq=1&orientation=landscape');
+            background-size: cover;
+            background-position: center;
+        }
+        .popup-overlay {
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+        input:focus {
+            outline: none;
+        }
+        .gradient-border {
+            position: relative;
+        }
+        .gradient-border::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #D4AF37, transparent);
+        }
+        .scroll-container {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .scroll-container::-webkit-scrollbar {
+            display: none;
+        }
+        .parallax {
+            transition: transform 0.5s ease-out;
+        }
+
+        .product-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 10px 20px rgba(212, 175, 55, 0.2);
+}
+
+#notification {
+    transform: translateY(-20px);
+    opacity: 0;
+}
+#notification.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* Cart Counter Animation */
+.animate-ping {
+    animation: ping 0.5s cubic-bezier(0, 0, 0.2, 1);
+}
+@keyframes ping {
+    75%, 100% {
+        transform: scale(1.2);
+        opacity: 0;
+    }
+}
+
+    
+
+        
+    </style>
+</head>
+<body>
+
+<!-- !-- Notification Toast -->  
+<div id="notification" class="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 hidden transition-all duration-300">
+    <div class="flex items-center gap-2">
+        <i class="ri-checkbox-circle-fill"></i>
+        <span id="notification-message">Product added to cart!</span>
+    </div>
+</div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 w-full z-50 bg-transparent transition-all duration-300">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="font-['Pacifico'] text-primary text-2xl">logooooooo</div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#" class="text-white hover:text-primary transition-colors">Home</a>
+                <a href="#products" class="text-white hover:text-primary transition-colors">Products</a>
+                <a href="#fragrance" class="text-white hover:text-primary transition-colors">Fragrance</a>
+                <a href="#purchase" class="text-white hover:text-primary transition-colors">Shop</a>
+                
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="w-10 h-10 flex items-center justify-center text-white hover:text-primary cursor-pointer">
+                    <i class="ri-search-line ri-lg"></i>
+               <div class="relative">
+    <i class="ri-shopping-bag-line ri-lg"></i>
+    <span class="cart-counter absolute -top-2 -right-2 bg-primary text-secondary text-xs rounded-full w-5 h-5 flex items-center justify-center">0</span>
+</div>
+                <div class="md:hidden w-10 h-10 flex items-center justify-center text-white hover:text-primary cursor-pointer">
+                    <i class="ri-menu-line ri-lg"></i>
+                    <div id="searchModal" class="modal">
+   
+</div>
+                    
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+
+    <!-- Hero Section -->
+    <section class="hero-section min-h-screen flex items-center justify-center relative overflow-hidden">
+        <div class="container mx-auto px-6 py-20 w-full flex flex-col md:flex-row items-center">
+            <div class="w-full md:w-1/2 text-center md:text-left mb-12 md:mb-0">
+                <span class="inline-block text-primary text-sm tracking-widest uppercase mb-4">Premium Fragrance</span>
+                <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">The Man Choice</h1>
+                <p class="text-gray-300 text-lg mb-8 max-w-lg">Discover the essence of masculine elegance. A bold statement of confidence and sophistication for the modern gentleman.</p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                    <a href="#purchase" class="bg-primary text-secondary px-8 py-3 !rounded-button font-medium hover:bg-opacity-90 transition whitespace-nowrap">Shop Now</a>
+                    <a href="#story" class="border border-white text-white px-8 py-3 !rounded-button font-medium hover:bg-white hover:bg-opacity-10 transition whitespace-nowrap">Discover Story</a>
+                </div>
+            </div>
+            <div class="w-full md:w-1/2 flex justify-center">
+                <img src="piclumen-1746699449316-removebg-preview.png" style="max-height: 70vh;">
+            </div>
+        </div>
+    </section>
+
+   
+  
+    
+   <!-- Products Section -->
+<section id="products" class="bg-black py-16">
+    <div class="container mx-auto px-6">
+      <h2 class="text-4xl font-bold mb-12 text-center text-white">Our Products</h2>
+  
+      <div class="flex justify-center flex-wrap gap-8">
+
+        <!-- Product 1 -->
+        <div class="bg-white shadow-lg h-[400px] w-[250px] rounded-lg overflow-hidden">
+          <img src="pr1.png" alt="Luxury Perfume" class="h-[200px] w-full object-cover">
+          <div class="p-6">
+            <h3 class="text-xl font-semibold mb-2">Luxury Perfume</h3>
+            <p class="text-gray-600 mb-4">A bold and elegant fragrance that defines your style.</p>
+            <div class="flex justify-between items-center">
+              <span class="text-lg font-bold text-primary">$149.00</span>
+              <button class="bg-primary text-white px-4 py-2 rounded hover:bg-opacity-90 transition add-to-cart-btn">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Product 2 -->
+        <div class="bg-white shadow-lg h-[400px] w-[250px] rounded-lg overflow-hidden">
+          <img src="piclumen-1746699449316.png" alt="Ocean Breeze" class="h-[200px] w-full object-cover">
+          <div class="p-6">
+            <h3 class="text-xl font-semibold mb-2">Ocean Breeze</h3>
+            <p class="text-gray-600 mb-4">Fresh marine scent perfect for summer days. your style</p>
+            <div class="flex justify-between items-center">
+              <span class="text-lg font-bold text-primary">$199.00</span>
+            <button class="bg-primary text-white px-4 py-2 rounded hover:bg-opacity-90 transition add-to-cart-btn">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Product 3 -->
+        <div class="bg-white shadow-lg h-[400px] w-[250px] rounded-lg overflow-hidden">
+          <img src="pr1.png" alt="Royal Oud" class="h-[200px] w-full object-cover">
+          <div class="p-6">
+            <h3 class="text-xl font-semibold mb-2">Royal Oud</h3>
+            <p class="text-gray-600 mb-4">A rich and deep scent with woody tones for the elite.</p>
+            <div class="flex justify-between items-center">
+              <span class="text-lg font-bold text-primary">$249.00</span>
+             <button class="bg-primary text-white px-4 py-2 rounded hover:bg-opacity-90 transition add-to-cart-btn">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+
+  </section>
+  
+  <!-- Purchase Section -->
+  <section id="purchase" class="py-20 bg-[#111] text-white hidden">
+    <div class="container mx-auto px-6">
+      <div class="flex flex-col lg:flex-row items-center gap-12">
+        <div class="w-full lg:w-1/2 flex justify-center">
+          <img id="purchase-image" src="" alt="Product Image" class="max-w-full h-auto object-contain" style="max-height: 70vh;">
+        </div>
+        <div class="w-full lg:w-1/2">
+          <h2 id="purchase-title" class="text-4xl md:text-5xl font-bold mb-4">Product Title</h2>
+          <p id="purchase-description" class="text-gray-300 mb-8 leading-relaxed">Product Description</p>
+          <div class="flex items-baseline mb-8">
+            <span id="purchase-price" class="text-4xl font-bold mr-3">$0.00</span>
+          </div>
+         <a href="#Proceed"> <button class="bg-primary text-white px-4 py-2 rounded hover:bg-opacity-90 transition add-to-cart-btn">Add to Cart</button>Proceed to Buy</button></a>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+
+    <!-- Fragrance Notes Section -->
+    <section id="fragrance" class="py-20 bg-[#111111]">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="inline-block text-primary text-sm tracking-widest uppercase mb-4">Composition</span>
+                <h2 class="text-4xl md:text-5xl font-bold mb-6">Fragrance Notes</h2>
+                <div class="w-20 h-0.5 bg-primary mx-auto mb-8"></div>
+                <p class="text-gray-300 max-w-2xl mx-auto">A sophisticated blend of carefully selected ingredients creates a unique olfactory experience that evolves throughout the day.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Top Notes -->
+                <div class="bg-secondary bg-opacity-50 p-8 rounded transition-all duration-300 hover:transform hover:scale-105 hover:shadow-xl">
+                    <div class="w-16 h-16 flex items-center justify-center bg-primary bg-opacity-10 rounded-full mb-6 mx-auto">
+                        <i class="ri-drop-line ri-2x text-primary"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-4 text-center">Top Notes</h3>
+                    <div class="w-12 h-0.5 bg-primary mx-auto mb-6"></div>
+                    <ul class="space-y-3 text-center">
+                        <li class="text-gray-300">Sicilian Bergamot</li>
+                        <li class="text-gray-300">Black Pepper</li>
+                        <li class="text-gray-300">Cardamom</li>
+                        <li class="text-gray-300">Ginger</li>
+                    </ul>
+                    <p class="mt-6 text-gray-400 text-sm text-center">The first impression: crisp, spicy, and invigorating.</p>
+                </div>
+                <!-- Heart Notes -->
+                <div class="bg-secondary bg-opacity-50 p-8 rounded transition-all duration-300 hover:transform hover:scale-105 hover:shadow-xl">
+                    <div class="w-16 h-16 flex items-center justify-center bg-primary bg-opacity-10 rounded-full mb-6 mx-auto">
+                        <i class="ri-heart-line ri-2x text-primary"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-4 text-center">Heart Notes</h3>
+                    <div class="w-12 h-0.5 bg-primary mx-auto mb-6"></div>
+                    <ul class="space-y-3 text-center">
+                        <li class="text-gray-300">Lavender</li>
+                        <li class="text-gray-300">Cedarwood</li>
+                        <li class="text-gray-300">Geranium</li>
+                        <li class="text-gray-300">Violet Leaf</li>
+                    </ul>
+                    <p class="mt-6 text-gray-400 text-sm text-center">The evolving character: aromatic, woody, and sophisticated.</p>
+                </div>
+
+                <!-- Base Notes -->
+                <div class="bg-secondary bg-opacity-50 p-8 rounded transition-all duration-300 hover:transform hover:scale-105 hover:shadow-xl">
+                    <div class="w-16 h-16 flex items-center justify-center bg-primary bg-opacity-10 rounded-full mb-6 mx-auto">
+                        <i class="ri-flask-line ri-2x text-primary"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-4 text-center">Base Notes</h3>
+                    <div class="w-12 h-0.5 bg-primary mx-auto mb-6"></div>
+                    <ul class="space-y-3 text-center">
+                        <li class="text-gray-300">Amber</li>
+                        <li class="text-gray-300">Vetiver</li>
+                        <li class="text-gray-300">Sandalwood</li>
+                        <li class="text-gray-300">Vanilla</li>
+                    </ul>
+                    <p class="mt-6 text-gray-400 text-sm text-center">The lasting impression: warm, sensual, and mysterious.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ingredients Carousel -->
+    <section class="py-20 bg-gradient-to-b from-[#111111] to-secondary">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="inline-block text-primary text-sm tracking-widest uppercase mb-4">Premium Quality</span>
+                <h2 class="text-4xl md:text-5xl font-bold mb-6">Key Ingredients</h2>
+                <div class="w-20 h-0.5 bg-primary mx-auto mb-8"></div>
+                <p class="text-gray-300 max-w-2xl mx-auto">Sourced from the finest locations around the world, our ingredients are selected for their exceptional quality and character.</p>
+            </div>
+
+            <div class="scroll-container overflow-x-auto pb-8">
+                <div class="flex space-x-6 min-w-max">
+                    <!-- Ingredient 1 -->
+                    <div class="w-64 flex-shrink-0">
+                        <img src="https://readdy.ai/api/search-image?query=bergamot%2520fruit%2520on%2520dark%2520background%2520with%2520water%2520droplets%2520professional%2520product%2520photography%2520with%2520dramatic%2520lighting%2520and%2520reflections%2520high-end%2520ingredient%2520shot%2520for%2520luxury%2520perfume%2520brand&width=400&height=400&seq=4&orientation=squarish" alt="Bergamot" class="w-full h-64 object-cover rounded mb-4">
+                        <h3 class="text-xl font-semibold mb-2">Sicilian Bergamot</h3>
+                        <p class="text-gray-400 text-sm">Hand-picked from the coastal groves of Sicily, our bergamot adds a distinctive citrus brightness.</p>
+                    </div>
+
+                    <!-- Ingredient 2 -->
+                    <div class="w-64 flex-shrink-0">
+                        <img src="https://readdy.ai/api/search-image?query=black%2520pepper%2520corns%2520scattered%2520on%2520dark%2520background%2520with%2520dramatic%2520lighting%2520professional%2520food%2520photography%2520for%2520luxury%2520brand%2520high-end%2520spice%2520ingredient%2520shot%2520with%2520shadows%2520and%2520reflections&width=400&height=400&seq=5&orientation=squarish" alt="Black Pepper" class="w-full h-64 object-cover rounded mb-4">
+                        <h3 class="text-xl font-semibold mb-2">Black Pepper</h3>
+                        <p class="text-gray-400 text-sm">Sourced from the highlands of Vietnam, our black pepper provides a bold, spicy character.</p>
+                    </div>
+
+                    <!-- Ingredient 3 -->
+                    <div class="w-64 flex-shrink-0">
+                        <img src="https://readdy.ai/api/search-image?query=cedarwood%2520chips%2520and%2520shavings%2520on%2520dark%2520background%2520with%2520dramatic%2520lighting%2520professional%2520photography%2520for%2520luxury%2520perfume%2520brand%2520high-end%2520ingredient%2520shot%2520with%2520shadows%2520and%2520reflections&width=400&height=400&seq=6&orientation=squarish" alt="Cedarwood" class="w-full h-64 object-cover rounded mb-4">
+                        <h3 class="text-xl font-semibold mb-2">Atlas Cedarwood</h3>
+                        <p class="text-gray-400 text-sm">Harvested from the Atlas Mountains of Morocco, this cedarwood brings depth and woody warmth.</p>
+                    </div>
+
+                    <!-- Ingredient 4 -->
+                    <div class="w-64 flex-shrink-0">
+                        <img src="https://readdy.ai/api/search-image?query=amber%2520resin%2520pieces%2520on%2520dark%2520background%2520with%2520golden%2520light%2520reflections%2520professional%2520photography%2520for%2520luxury%2520perfume%2520brand%2520high-end%2520ingredient%2520shot%2520with%2520dramatic%2520lighting&width=400&height=400&seq=7&orientation=squarish" alt="Amber" class="w-full h-64 object-cover rounded mb-4">
+                        <h3 class="text-xl font-semibold mb-2">Baltic Amber</h3>
+                        <p class="text-gray-400 text-sm">Our amber accord, inspired by fossilized resin from the Baltic region, adds rich, warm depth.</p>
+                    </div>
+
+                    <!-- Ingredient 5 -->
+                    <div class="w-64 flex-shrink-0">
+                        <img src="https://readdy.ai/api/search-image?query=vanilla%2520beans%2520on%2520dark%2520background%2520with%2520dramatic%2520lighting%2520professional%2520photography%2520for%2520luxury%2520perfume%2520brand%2520high-end%2520ingredient%2520shot%2520with%2520shadows%2520and%2520reflections&width=400&height=400&seq=8&orientation=squarish" alt="Vanilla" class="w-full h-64 object-cover rounded mb-4">
+                        <h3 class="text-xl font-semibold mb-2">Madagascar Vanilla</h3>
+                        <p class="text-gray-400 text-sm">Sourced from the finest plantations in Madagascar, our vanilla adds a sensual, creamy sweetness.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="py-20 bg-secondary">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="inline-block text-primary text-sm tracking-widest uppercase mb-4">Advantages</span>
+                <h2 class="text-4xl md:text-5xl font-bold mb-6">Why Choose Us</h2>
+                <div class="w-20 h-0.5 bg-primary mx-auto mb-8"></div>
+                <p class="text-gray-300 max-w-2xl mx-auto">More than just a fragrance, The Man Choice offers a complete experience designed for the discerning gentleman.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Benefit 1 -->
+                <div class="text-center">
+                    <div class="w-16 h-16 flex items-center justify-center bg-primary bg-opacity-10 rounded-full mb-6 mx-auto">
+                        <i class="ri-time-line ri-2x text-primary"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Long-Lasting</h3>
+                    <p class="text-gray-400">Our unique formula ensures the fragrance lasts throughout your day, from morning meetings to evening events.</p>
+                </div>
+
+                <!-- Benefit 2 -->
+                <div class="text-center">
+                    <div class="w-16 h-16 flex items-center justify-center bg-primary bg-opacity-10 rounded-full mb-6 mx-auto">
+                        <i class="ri-leaf-line ri-2x text-primary"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Natural Ingredients</h3>
+                    <p class="text-gray-400">We use the highest quality natural ingredients, ethically sourced from sustainable suppliers around the world.</p>
+                </div>
+
+                <!-- Benefit 3 -->
+                <div class="text-center">
+                    <div class="w-16 h-16 flex items-center justify-center bg-primary bg-opacity-10 rounded-full mb-6 mx-auto">
+                        <i class="ri-flask-line ri-2x text-primary"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Unique Composition</h3>
+                    <p class="text-gray-400">Our master perfumer has created a signature scent that cannot be found elsewhere, ensuring you stand out.</p>
+                </div>
+
+                <!-- Benefit 4 -->
+                <div class="text-center">
+                    <div class="w-16 h-16 flex items-center justify-center bg-primary bg-opacity-10 rounded-full mb-6 mx-auto">
+                        <i class="ri-award-line ri-2x text-primary"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Award-Winning</h3>
+                    <p class="text-gray-400">Recognized by industry experts and fragrance connoisseurs for its exceptional quality and character.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Purchase Section -->
+    <div id="Proceed">
+    <section  class="py-20 bg-[#111111]">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col lg:flex-row items-center gap-12">
+                <div class="w-full lg:w-1/2 flex justify-center">
+                    <img src="https://readdy.ai/api/search-image?query=luxury%2520men%2520perfume%2520bottle%2520with%2520gold%2520cap%2520and%2520box%2520packaging%2520elegant%2520design%2520on%2520black%2520background%2520with%2520subtle%2520reflections%2520high-end%2520product%2520photography%2520clear%2520glass%2520bottle%2520with%2520dark%2520amber%2520liquid%2520inside%2520professional%2520studio%2520lighting&width=600&height=800&seq=9&orientation=portrait" alt="The Man Choice Perfume" class="max-w-full h-auto object-contain" style="max-height: 70vh;">
+                </div>
+                <div class="w-full lg:w-1/2">
+                    <span class="inline-block text-primary text-sm tracking-widest uppercase mb-4" >Premium Collection</span >
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4">The Man Choice</h2>
+                    <div class="flex items-center mb-6">
+                        <div class="flex">
+                            <i class="ri-star-fill text-primary"></i>
+                            <i class="ri-star-fill text-primary"></i>
+                            <i class="ri-star-fill text-primary"></i>
+                            <i class="ri-star-fill text-primary"></i>
+                            <i class="ri-star-fill text-primary"></i>
+                        </div>
+                        <span class="ml-2 text-gray-400">(128 reviews)</span>
+                    </div>
+                    <p class="text-gray-300 mb-8 leading-relaxed">A bold, sophisticated fragrance that embodies confidence and elegance. The perfect statement piece for the modern gentleman who demands nothing but the best.</p>
+                    
+                    <div class="flex items-baseline mb-8">
+                        <span class="text-4xl font-bold mr-3">$149.00</span>
+                        <span class="text-gray-400 line-through">$299.00</span>
+                        <span class="ml-3 bg-primary text-secondary px-2 py-1 text-xs font-bold rounded">50% OFF</span>
+                    </div>
+
+                    <div class="mb-8">
+                        <h3 class="text-lg font-semibold mb-3">Size</h3>
+                        <div class="flex space-x-4">
+                            <button class="size-btn border border-gray-600 text-gray-400 px-4 py-2 !rounded-button hover:border-primary hover:text-primary transition whitespace-nowrap">50ml</button>
+                            <button class="size-btn border border-primary text-primary px-4 py-2 !rounded-button transition whitespace-nowrap">100ml</button>
+                            <button class="size-btn border border-gray-600 text-gray-400 px-4 py-2 !rounded-button hover:border-primary hover:text-primary transition whitespace-nowrap">150ml</button>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h3 class="text-lg font-semibold mb-3">Quantity</h3>
+                        <div class="flex items-center border border-gray-600 inline-block !rounded-button">
+                            <button class="px-4 py-2 text-gray-400 hover:text-primary transition whitespace-nowrap minusBtn">-</button>
+                            <span class="px-4 py-2 text-white" id="quanty">1</span>
+                            <button class="px-4 py-2 text-gray-400 hover:text-primary transition whitespace-nowrap plusBtn">+</button>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-4 mb-8">
+                        <button class="bg-primary text-secondary px-8 py-3 !rounded-button font-medium hover:bg-opacity-90 transition flex-1 whitespace-nowrap flex items-center justify-center">
+                            <i class="ri-shopping-bag-line mr-2"></i>
+                            Add to Cart
+                        </button>
+                        <button class="bg-primary text-white px-4 py-2 rounded hover:bg-opacity-90 transition add-to-cart-btn">Add to Cart</button>
+                            <i class="ri-bank-card-line mr-2"></i>
+                            Buy Now
+                        </button>
+                    </div>
+
+                    <div class="flex flex-col gap-4">
+                        <div class="flex items-center">
+                            <div class="w-6 h-6 flex items-center justify-center text-primary mr-3">
+                                <i class="ri-truck-line"></i>
+                            </div>
+                            <span class="text-gray-300">Free shipping on orders over $100</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-6 h-6 flex items-center justify-center text-primary mr-3">
+                                <i class="ri-refresh-line"></i>
+                            </div>
+                            <span class="text-gray-300">30-day money-back guarantee</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-6 h-6 flex items-center justify-center text-primary mr-3">
+                                <i class="ri-secure-payment-line"></i>
+                            </div>
+                            <span class="text-gray-300">Secure checkout</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Purchase Section -->
+<div>
+        <section id="Products" class="py-20 bg-[#111111] hidden" > <!-- Initially hidden -->
+    <div class="container mx-auto px-6" >
+      <div class="flex flex-col lg:flex-row items-center gap-12">
+        <div class="w-full lg:w-1/2 flex justify-center">
+          <img id="purchase-image" src="" alt="Product Image" class="max-w-full h-auto object-contain" style="max-height: 70vh;">
+        </div>
+        <div class="w-full lg:w-1/2 text-white">
+          <h2 id="purchase-title" class="text-4xl md:text-5xl font-bold mb-4">Product Title</h2>
+          <p id="purchase-description" class="text-gray-300 mb-8 leading-relaxed">Product Description</p>
+          <div class="flex items-baseline mb-8">
+            <span id="purchase-price" class="text-4xl font-bold mr-3">$0.00</span>
+          </div>
+         </a> <button class="bg-primary text-secondary px-8 py-3 rounded font-medium">Proceed to Buy</button >
+        </div>
+      </div>
+    
+
+</div>
+</section>
+  
+        
+    </section>
+    <!-- Footer -->
+    <footer class="py-16 bg-secondary gradient-border">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+                <div>
+                    <div class="font-['Pacifico'] text-primary text-3xl mb-6">logo</div>
+                    <p class="text-gray-400 mb-6">Elevate your presence with our premium fragrances crafted for the modern gentleman.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 flex items-center justify-center border border-gray-700 rounded-full text-gray-400 hover:text-primary hover:border-primary transition">
+                            <i class="ri-facebook-fill"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 flex items-center justify-center border border-gray-700 rounded-full text-gray-400 hover:text-primary hover:border-primary transition">
+                            <i class="ri-instagram-line"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 flex items-center justify-center border border-gray-700 rounded-full text-gray-400 hover:text-primary hover:border-primary transition">
+                            <i class="ri-twitter-x-line"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 flex items-center justify-center border border-gray-700 rounded-full text-gray-400 hover:text-primary hover:border-primary transition">
+                            <i class="ri-youtube-line"></i>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-6">Quick Links</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition">Home</a></li>
+                        <li><a href="#story" class="text-gray-400 hover:text-primary transition">About Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition">Products</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition">Blog</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-semibold mb-6">Customer Service</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition">FAQ</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition">Shipping Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition">Returns & Refunds</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition">Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-semibold mb-6">Newsletter</h3>
+                    <p class="text-gray-400 mb-4">Subscribe to receive updates, access to exclusive deals, and more.</p>
+                    <div class="flex flex-col sm:flex-row gap-2">
+                        <input type="email" placeholder="Enter your email" class="bg-[#111111] text-white px-4 py-3 !rounded-button border-none focus:ring-1 focus:ring-primary">
+                        <button class="bg-primary text-secondary px-4 py-3 !rounded-button font-medium hover:bg-opacity-90 transition whitespace-nowrap">Subscribe</button>
+                    </div>
+                    <div class="mt-6">
+                        <h4 class="text-sm font-semibold mb-3 text-gray-300">We Accept</h4>
+                        <div class="flex space-x-3">
+                            <div class="w-10 h-6 flex items-center justify-center text-gray-400">
+                                <i class="ri-visa-fill ri-lg"></i>
+                            </div>
+                            <div class="w-10 h-6 flex items-center justify-center text-gray-400">
+                                <i class="ri-mastercard-fill ri-lg"></i>
+                            </div>
+                            <div class="w-10 h-6 flex items-center justify-center text-gray-400">
+                                <i class="ri-paypal-fill ri-lg"></i>
+                            </div>
+                            <div class="w-10 h-6 flex items-center justify-center text-gray-400">
+                                <i class="ri-apple-fill ri-lg"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center">
+                <p class="text-gray-500">© 2025 The Man Choice. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <!-- Welcome Popup -->
+    <div id="welcomePopup" class="fixed inset-0 z-50 flex items-center justify-center popup-overlay opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="bg-secondary border border-gray-800 p-8 rounded-lg w-full max-w-md relative transform transition-transform duration-300 scale-95">
+            <button id="closePopup" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                <i class="ri-close-line ri-lg"></i>
+            </button>
+            <div class="text-center">
+                <div class="w-16 h-16 flex items-center justify-center bg-primary bg-opacity-10 rounded-full mb-6 mx-auto">
+                    <i class="ri-gift-line ri-2x text-primary"></i>
+                </div>
+                <h2 class="text-3xl font-bold mb-2">Special Offer</h2>
+                <p class="text-primary text-xl font-semibold mb-6">50% OFF on your first order</p>
+                <p class="text-gray-400 mb-6">Enter your email to claim this exclusive offer and join our community of distinguished gentlemen.</p>
+                <div class="mb-4">
+                    <input type="email" placeholder="Your email address" class="w-full bg-[#111111] text-white px-4 py-3 !rounded-button border-none mb-4 focus:ring-1 focus:ring-primary">
+                    <button class="w-full bg-primary text-secondary px-4 py-3 !rounded-button font-medium hover:bg-opacity-90 transition whitespace-nowrap">Claim Offer</button>
+                </div>
+                <p class="text-gray-500 text-sm">By subscribing, you agree to our Privacy Policy and Terms of Service.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Navbar scroll effect
+            const navbar = document.querySelector('nav');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('bg-secondary', 'shadow-md');
+                    navbar.classList.remove('bg-transparent');
+                } else {
+                    navbar.classList.remove('bg-secondary', 'shadow-md');
+                    navbar.classList.add('bg-transparent');
+                }
+            });
+
+            // Parallax effect
+            const parallaxElements = document.querySelectorAll('.parallax');
+            window.addEventListener('scroll', function() {
+                parallaxElements.forEach(element => {
+                    const scrollPosition = window.scrollY;
+                    const elementPosition = element.offsetTop;
+                    const distance = (elementPosition - scrollPosition) * 0.05;
+                    element.style.transform = `translateY(${distance}px)`;
+                });
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Welcome popup
+            const popup = document.getElementById('welcomePopup');
+            const closeBtn = document.getElementById('closePopup');
+            
+            // Show popup after 2 seconds
+            setTimeout(function() {
+                popup.classList.remove('opacity-0', 'pointer-events-none');
+                popup.classList.add('opacity-100');
+                document.querySelector('#welcomePopup > div').classList.remove('scale-95');
+                document.querySelector('#welcomePopup > div').classList.add('scale-100');
+            }, 2000);
+            
+            // Close popup
+            closeBtn.addEventListener('click', function() {
+                popup.classList.add('opacity-0', 'pointer-events-none');
+                popup.classList.remove('opacity-100');
+                document.querySelector('#welcomePopup > div').classList.add('scale-95');
+                document.querySelector('#welcomePopup > div').classList.remove('scale-100');
+            });
+        });
+
+
+
+// Quantity Button Logic
+const minusBtn = document.querySelector('.minusBtn');
+const plusBtn = document.querySelector('.plusBtn');
+const quantitySpan = document.querySelector('#quanty');
+
+let quantity = 1;
+
+plusBtn.addEventListener('click', () => {
+    quantity++;
+    quantitySpan.textContent = quantity;
+});
+
+minusBtn.addEventListener('click', () => {
+    if (quantity > 1) {
+        quantity--;
+        quantitySpan.textContent = quantity;
+    }
+});
+
+
+const addToCartBtn = document.querySelector('button.bg-primary');
+addToCartBtn.addEventListener('click', () => {
+    const product = {
+        name: "The Man Choice",
+        price: 149,
+        quantity: quantity,
+        size: "100ml" // अभी manually डाल रहा हूँ; आगे dynamically चुनना होगा
+    };
+
+   const addToCartButtons = document.querySelectorAll('.bg-primary');
+addToCartButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    const productCard = button.closest('div.bg-white');
+    const productImage = productCard.querySelector('img').src;
+    const productName = productCard.querySelector('h3').innerText;
+    const productDescription = productCard.querySelector('p').innerText;
+    const productPrice = productCard.querySelector('span').innerText;
+    document.getElementById('purchase-image').src = productImage;
+    document.getElementById('purchase-title').innerText = productName;
+    document.getElementById('purchase-description').innerText = productDescription;
+    document.getElementById('purchase-price').innerText = productPrice;
+    document.getElementById('purchase').classList.remove('hidden');
+    document.getElementById('purchase').scrollIntoView({ behavior: 'smooth' });
+  });
+});
+});
+
+
+
+const buyNowBtn = document.querySelector('button.bg-white');
+buyNowBtn.addEventListener('click', () => {
+    alert("Redirecting to payment (Dummy)");
+    // असल प्रोजेक्ट में Razorpay या अन्य पेमेंट गेटवे की integration करेंगे
+});
+
+
+const sizeButtons = document.querySelectorAll(".size-btn");
+
+sizeButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+        // Remove active style from all
+        sizeButtons.forEach((b) => {
+            b.classList.remove("border-primary", "text-primary");
+            b.classList.add("border-gray-600", "text-gray-400");
+            
+        });
+
+        // add item to card
+    const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+addToCartButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+        const productCard = button.closest('div.bg-white');
+        const product = {
+            name: productCard.querySelector('h3').textContent,
+            price: parseFloat(productCard.querySelector('span').textContent.replace('$', '')),
+            quantity: 1,
+            size: '100ml',
+            image: productCard.querySelector('img').src
+        };
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        cart.push(product);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        alert('Item added to cart!');
+
+        // Update purchase section
+        // ===== ADD TO CART FUNCTIONALITY =====
+document.querySelectorAll('.add-to-cart-btn').forEach((button) => {
+    button.addEventListener('click', function(e) {
+        e.preventDefault(); // Prevent default behavior
+        
+        // Get product details
+        const productCard = this.closest('.bg-white');
+        const product = {
+            name: productCard.querySelector('h3').textContent,
+            price: parseFloat(productCard.querySelector('span').textContent.replace('$', '')),
+            image: productCard.querySelector('img').src,
+            quantity: 1,
+            size: '100ml'
+        };
+
+        // Add to cart (localStorage)
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        cart.push(product);
+        localStorage.setItem('cart', JSON.stringify(cart));
+
+        // Show notification
+        showNotification(`${product.name} added to cart`);
+        
+        // Update cart counter
+        updateCartCounter();
+    });
+});
+
+// ===== PROCEED TO BUY FUNCTIONALITY =====
+document.querySelectorAll('.proceed-to-buy-btn').forEach((button) => {
+    button.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Get product details
+        const productCard = this.closest('.bg-white');
+        const product = {
+            name: productCard.querySelector('h3').textContent,
+            price: parseFloat(productCard.querySelector('span').textContent.replace('$', '')),
+            image: productCard.querySelector('img').src,
+            quantity: 1,
+            size: '100ml'
+        };
+
+        // Directly go to purchase section
+        document.getElementById('purchase-image').src = product.image;
+        document.getElementById('purchase-title').textContent = product.name;
+        document.getElementById('purchase-description').textContent = productCard.querySelector('p').textContent;
+        document.getElementById('purchase-price').textContent = `$${product.price}`;
+        document.getElementById('purchase').classList.remove('hidden');
+        
+        // Smooth scroll to purchase section
+        document.getElementById('purchase').scrollIntoView({ behavior: 'smooth' });
+    });
+});
+
+// ===== HELPER FUNCTIONS =====
+function showNotification(message) {
+    const notification = document.getElementById('notification');
+    const notificationMsg = document.getElementById('notification-message');
+    
+    notificationMsg.textContent = message;
+    notification.classList.remove('hidden');
+    notification.classList.add('translate-y-0', 'opacity-100');
+    
+    // Hide after 3 seconds
+    setTimeout(() => {
+        notification.classList.add('translate-y-10', 'opacity-0');
+        setTimeout(() => notification.classList.add('hidden'), 300);
+    }, 3000);
+}
+
+function updateCartCounter() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const cartCounter = document.querySelector('.cart-counter');
+    if (cartCounter) {
+        cartCounter.textContent = cart.length;
+        // Add animation
+        cartCounter.classList.add('animate-ping');
+        setTimeout(() => cartCounter.classList.remove('animate-ping'), 500);
+    }
+}
+    });
+});
+    // Purchase section me data update karo
+    document.getElementById('purchase-image').src = productImage;
+    document.getElementById('purchase-title').innerText = productName;
+    document.getElementById('purchase-description').innerText = productDescription;
+    document.getElementById('purchase-price').innerText = productPrice;
+
+    // Section visible karo
+    document.getElementById('purchase').classList.remove('hidden');
+
+    // Scroll to purchase section
+    document.getElementById('purchase').scrollIntoView({ behavior: 'smooth' });
+  });
+});
+document.querySelector('.ri-menu-line').addEventListener('click', () => {
+    document.querySelector('.md\\:hidden .hidden').classList.toggle('hidden');
+});
+
+
+
+
+    </script>
+</body>
+</html>
